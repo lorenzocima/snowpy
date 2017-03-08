@@ -20,6 +20,7 @@ from sklearn import mixture
 from sklearn.preprocessing import StandardScaler
 from scipy.optimize import curve_fit
 
+from particle_classes import data_psd
 
 ##Data import from .txt file to data frame
 
@@ -53,7 +54,7 @@ data['VOLratio']=volume_ratio
 ##Selection of period of interest 
 
 start_time='2014-11-06 22:40:00'
-end_time='2014-11-06 23:50:00'
+end_time='2014-11-06 22:44:00'
 
 data=data[(data['Date_Time']>=start_time) & (data['Date_Time']<=end_time)]
           
@@ -156,9 +157,9 @@ my_cmap.set_under('w')
 
 ##Option for plotting (select dataset -> data, cluster0, cluster1, cluster2)
 
-KM_data_set=KM_cluster0
+KM_data_set=KM_cluster1
 
-GM_data_set=GM_cluster0
+GM_data_set=GM_cluster1
 
     
 fig=plt.figure()
@@ -210,8 +211,10 @@ plt.hist(GM_cluster2['Ddeq'], range=(range_min,range_max), bins=range_max/delta,
 count2, division2 = np.histogram(GM_cluster2['Ddeq'],range=(range_min,range_max), bins=range_max/delta)
 plt.xlabel('Ddeq')
 plt.ylabel('Number of particles')
-
 plt.show()
+
+
+
 '''
 plt.hist(data['Ddeq'], range=(range_min,range_max), bins=range_max/delta, color='black')
 count2, division2 = np.histogram(data['Ddeq'],range=(range_min,range_max), bins=range_max/delta)
@@ -231,6 +234,16 @@ plt.plot(division2, count2, color='yellow')
 plt.xlim(0,6)
 plt.show()
 
+new_data_psd=data_psd.mean()
+new_data_psd=new_data_psd[3:]#eliminate D0,N0 and Lambda to have only data for each class
+
+
+
+fig4=plt.figure()
+plt.plot(division0/2, (count0+count1), color='black')
+plt.plot(new_data_psd,'k-o',label='Nt')
+plt.xlim(0,6)
+plt.show()
 
 
 '''
